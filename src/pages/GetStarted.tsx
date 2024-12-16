@@ -1,29 +1,20 @@
 import { Navigation } from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Rocket, Target, Bot, ChartBarIcon } from "lucide-react";
+import { ArrowRight, Rocket } from "lucide-react";
+import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Input } from "@/components/ui/input";
 
 const GetStarted = () => {
-  const steps = [
-    {
-      icon: <Target className="w-12 h-12 text-gold" />,
-      title: "Define Your Goals",
-      description: "Tell us about your business objectives and target audience.",
-      action: "Set Goals",
-    },
-    {
-      icon: <Bot className="w-12 h-12 text-gold" />,
-      title: "AI Configuration",
-      description: "Our AI analyzes your goals and configures optimal marketing strategies.",
-      action: "Configure AI",
-    },
-    {
-      icon: <ChartBarIcon className="w-12 h-12 text-gold" />,
-      title: "Launch Campaign",
-      description: "Review and launch your AI-optimized marketing campaigns.",
-      action: "Launch Now",
-    },
-  ];
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, isLoading } = useAuth();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    login(email, password);
+  };
 
   return (
     <div className="min-h-screen bg-dark text-white">
@@ -34,52 +25,49 @@ const GetStarted = () => {
         <div className="container mx-auto text-center">
           <Rocket className="w-16 h-16 text-gold mx-auto mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
-            Start Your AI Marketing Journey
+            Get Started with MarketAI
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-12">
-            Follow these simple steps to launch your first AI-powered marketing campaign
-            and start seeing results within days.
+            Login to access your AI-powered marketing dashboard
           </p>
-        </div>
-      </section>
 
-      {/* Steps Section */}
-      <section className="py-20 bg-dark-muted">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
-            {steps.map((step, index) => (
-              <Card key={index} className="bg-dark border-gold/20 hover:border-gold/40 transition-colors">
-                <CardHeader>
-                  <div className="mb-4">{step.icon}</div>
-                  <CardTitle className="text-xl text-white">{step.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-gray-400">{step.description}</p>
-                  <Button 
-                    className="w-full bg-dark border-gold text-gold hover:bg-gold hover:text-dark transition-colors"
-                    variant="outline"
-                  >
-                    {step.action} <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 gradient-text">
-            Ready to Transform Your Marketing?
-          </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-            Join hundreds of businesses already using ScaleVault's AI-powered marketing platform.
-          </p>
-          <Button className="bg-gold hover:bg-gold-muted text-dark text-lg px-8 py-6">
-            Start Free Trial <ArrowRight className="ml-2" />
-          </Button>
+          <Card className="max-w-md mx-auto bg-dark border-gold">
+            <CardHeader>
+              <CardTitle className="text-2xl text-white">Login</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <Input
+                    type="email"
+                    placeholder="demo@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-dark-muted text-white border-gold/20"
+                  />
+                </div>
+                <div>
+                  <Input
+                    type="password"
+                    placeholder="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="bg-dark-muted text-white border-gold/20"
+                  />
+                </div>
+                <Button 
+                  type="submit"
+                  className="w-full bg-gold hover:bg-gold-muted text-dark"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Logging in..." : "Login"}
+                </Button>
+                <p className="text-sm text-gray-400 text-center mt-4">
+                  Use demo@example.com / password to login
+                </p>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </section>
     </div>

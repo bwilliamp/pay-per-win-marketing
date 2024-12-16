@@ -2,14 +2,13 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   const toggleMenu = () => setIsOpen(!isOpen);
-
-  // TODO: Replace with actual auth check
-  const isLoggedIn = false;
 
   return (
     <nav className="fixed w-full bg-dark/95 backdrop-blur-sm z-50 py-4">
@@ -21,7 +20,7 @@ export const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {!isLoggedIn ? (
+            {!user ? (
               <>
                 <Link to="/" className="text-white hover:text-gold transition-colors">
                   Home
@@ -49,6 +48,13 @@ export const Navigation = () => {
                 <Link to="/revenue-tracking" className="text-white hover:text-gold transition-colors">
                   Revenue Tracking
                 </Link>
+                <Button 
+                  variant="outline" 
+                  className="border-gold text-gold hover:bg-gold hover:text-dark"
+                  onClick={logout}
+                >
+                  Logout
+                </Button>
               </>
             )}
           </div>
@@ -66,7 +72,7 @@ export const Navigation = () => {
         {isOpen && (
           <div className="md:hidden mt-4 pb-4 animate-fade-in">
             <div className="flex flex-col space-y-4">
-              {!isLoggedIn ? (
+              {!user ? (
                 <>
                   <Link
                     to="/"
@@ -121,6 +127,16 @@ export const Navigation = () => {
                   >
                     Revenue Tracking
                   </Link>
+                  <Button
+                    variant="outline"
+                    className="border-gold text-gold hover:bg-gold hover:text-dark w-full"
+                    onClick={() => {
+                      logout();
+                      toggleMenu();
+                    }}
+                  >
+                    Logout
+                  </Button>
                 </>
               )}
             </div>
