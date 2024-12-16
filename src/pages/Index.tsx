@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
-import { ArrowRight, ArrowUpCircle, Robot, ChartBarIcon, Target, Vault, DollarSign, Star } from "lucide-react";
+import { ArrowRight, ArrowUpCircle, Bot, ChartBarIcon, Target, Vault, DollarSign, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Index = () => {
@@ -62,7 +62,7 @@ const Index = () => {
                 description: "Custom-tailored marketing strategies based on your business goals and target audience."
               },
               {
-                icon: <Robot className="w-12 h-12 text-gold" />,
+                icon: <Bot className="w-12 h-12 text-gold" />,
                 title: "AI-Powered Ad Creation",
                 description: "Our AI generates high-converting ad copy and creative assets automatically."
               },
