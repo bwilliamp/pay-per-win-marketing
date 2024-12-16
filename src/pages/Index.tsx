@@ -139,7 +139,7 @@ const Index = () => {
               <div className="flex items-center justify-center mb-4">
                 <DollarSign className="w-12 h-12 text-gold" />
               </div>
-              <ul className="text-left space-y-4 mb-8">
+              <ul className="text-left space-y-4 mb-8 text-gray-300">
                 <li className="flex items-center">
                   <ArrowRight className="w-5 h-5 text-gold mr-2" />
                   No upfront fees
