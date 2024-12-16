@@ -27,9 +27,11 @@ export const Navigation = () => {
             <Link to="/pricing" className="text-white hover:text-gold transition-colors">
               Pricing
             </Link>
-            <Button variant="outline" className="border-gold text-gold hover:bg-gold hover:text-dark">
-              Get Started
-            </Button>
+            <Link to="/get-started">
+              <Button variant="outline" className="border-gold text-gold hover:bg-gold hover:text-dark">
+                Get Started
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -66,13 +68,14 @@ export const Navigation = () => {
               >
                 Pricing
               </Link>
-              <Button
-                variant="outline"
-                className="border-gold text-gold hover:bg-gold hover:text-dark w-full"
-                onClick={toggleMenu}
-              >
-                Get Started
-              </Button>
+              <Link to="/get-started" onClick={toggleMenu}>
+                <Button
+                  variant="outline"
+                  className="border-gold text-gold hover:bg-gold hover:text-dark w-full"
+                >
+                  Get Started
+                </Button>
+              </Link>
             </div>
           </div>
         )}
