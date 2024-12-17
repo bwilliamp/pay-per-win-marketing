@@ -2,10 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Facebook, Instagram, Twitter, Globe } from "lucide-react";
+import { Facebook, Instagram, Twitter, Globe, Link as LinkIcon } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const CampaignBuilder = () => {
   const { toast } = useToast();
@@ -17,11 +24,25 @@ export const CampaignBuilder = () => {
     targetAudience: "",
   });
 
+  const platforms = [
+    { id: 'facebook', name: 'Facebook Ads', icon: Facebook },
+    { id: 'instagram', name: 'Instagram Ads', icon: Instagram },
+    { id: 'twitter', name: 'Twitter Ads', icon: Twitter },
+    { id: 'google', name: 'Google Ads', icon: Globe },
+  ];
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setCampaignData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handlePlatformChange = (value: string) => {
+    setCampaignData((prev) => ({
+      ...prev,
+      platform: value,
     }));
   };
 
@@ -31,6 +52,14 @@ export const CampaignBuilder = () => {
     toast({
       title: "Campaign Created",
       description: "Your campaign has been successfully created!",
+    });
+  };
+
+  const connectPlatform = (platformId: string) => {
+    console.log(`Connecting to ${platformId}`);
+    toast({
+      title: "Connecting Account",
+      description: `Redirecting to ${platformId} for authentication...`,
     });
   };
 
@@ -92,6 +121,27 @@ export const CampaignBuilder = () => {
                   className="bg-dark border-gold/20 text-white"
                 />
               </div>
+              <div>
+                <Select onValueChange={handlePlatformChange} value={campaignData.platform}>
+                  <SelectTrigger className="bg-dark border-gold/20 text-white">
+                    <SelectValue placeholder="Select Platform" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-dark border-gold/20">
+                    {platforms.map((platform) => (
+                      <SelectItem 
+                        key={platform.id} 
+                        value={platform.id}
+                        className="text-white hover:bg-gold/20"
+                      >
+                        <div className="flex items-center gap-2">
+                          <platform.icon className="h-4 w-4" />
+                          {platform.name}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
               <Button 
                 type="submit" 
                 className="w-full border-gold text-gold hover:bg-gold hover:text-dark"
@@ -125,56 +175,28 @@ export const CampaignBuilder = () => {
           </CardContent>
         </Card>
 
-        {/* Platform Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="bg-dark-muted border-gold/20">
-            <CardHeader className="flex flex-row items-center space-x-2">
-              <Facebook className="h-6 w-6 text-gold" />
-              <CardTitle className="text-gold">Facebook Ads</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Button 
-                className="w-full border-gold text-gold hover:bg-gold hover:text-dark" 
-                variant="outline"
-                onClick={() => setCampaignData(prev => ({ ...prev, platform: 'facebook' }))}
-              >
-                Select Platform
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-dark-muted border-gold/20">
-            <CardHeader className="flex flex-row items-center space-x-2">
-              <Globe className="h-6 w-6 text-gold" />
-              <CardTitle className="text-gold">Google Ads</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Button 
-                className="w-full border-gold text-gold hover:bg-gold hover:text-dark" 
-                variant="outline"
-                onClick={() => setCampaignData(prev => ({ ...prev, platform: 'google' }))}
-              >
-                Select Platform
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-dark-muted border-gold/20">
-            <CardHeader className="flex flex-row items-center space-x-2">
-              <Instagram className="h-6 w-6 text-gold" />
-              <CardTitle className="text-gold">Instagram Ads</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Button 
-                className="w-full border-gold text-gold hover:bg-gold hover:text-dark" 
-                variant="outline"
-                onClick={() => setCampaignData(prev => ({ ...prev, platform: 'instagram' }))}
-              >
-                Select Platform
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Platform Connections */}
+        <Card className="bg-dark-muted border-gold/20">
+          <CardHeader>
+            <CardTitle className="text-gold">Connect Platforms</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {platforms.map((platform) => (
+                <Button
+                  key={platform.id}
+                  onClick={() => connectPlatform(platform.id)}
+                  variant="outline"
+                  className="w-full border-gold text-gold hover:bg-gold hover:text-dark flex items-center justify-center gap-2"
+                >
+                  <platform.icon className="h-4 w-4" />
+                  <LinkIcon className="h-4 w-4" />
+                  Connect {platform.name}
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
